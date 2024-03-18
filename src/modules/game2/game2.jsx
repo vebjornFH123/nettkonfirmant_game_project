@@ -1,13 +1,50 @@
-function Game2(navigateInApp) {
-  return (
-    <div className="h-screen w-screen flex justify-center items-center">
-      <div className="flex flex-col justify-center items-start overflow-hidden rounded-[25px] mb-4 bg-master-green w-screen sm:w-10/12 max-w-[780px] pt-4 px-4 pb-4">
-        <h1 className="text-[1.5rem] font-semibold  text-master-blue">Oppgave/utforskning</h1>
-        <span className="text-[1.25rem] text-master-blue">Slå opp i bibelen og finn ordene som mangler</span>
-        <div>Joh.3,16 For så høyt har Gud ________ verden at han ga sin sønn, den __________ , for at hver den som tror på ham ikke skal gå _____________ men ha evig liv. Mark 10,25 Det er lettere for en ___________ å gå gjennom et ________________ enn for en _________ å komme inn i ______________________ 1.mosebok 1 I ______________ skapte ____ _____________ og jorden. 1.Joh 4,7 Mine kjære, la oss _________ hverandre. For ____________ er fra Gud, og hver den som __________ er født av Gud og ___________Gud. Sal 119, 105 Ditt ord er en ____ for min fot og et ____ for min sti» Ordspråkene 11,22 “Som en _____________ i et _______________ er en ____________ kvinne uten __________”! Ester 5,1 Den tredje dagen kledte Ester seg i ______________ og stilte seg i den indre _____________________, midt imot ______________hus.</div>
-      </div>
-    </div>
-  );
+import React, {useState} from "react";
+import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd";
+
+const initialData = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"];
+
+function Game2() {
+	const [items, setItems] = useState(initialData);
+
+	const handleDragEnd = (result) => {
+		if (!result.destination) return;
+
+		const newItems = Array.from(items);
+		const [reorderedItem] = newItems.splice(result.source.index, 1);
+		newItems.splice(result.destination.index, 0, reorderedItem);
+
+		setItems(newItems);
+	};
+
+	return (
+		<div className="flex flex-col items-center">
+			<h1 className="text-2xl font-bold mt-8">Drag and Drop Reordering</h1>
+			<DragDropContext onDragEnd={handleDragEnd}>
+				<Droppable droppableId="list">
+					{(provided) => (
+						<ul className="mt-8 space-y-4" {...provided.droppableProps} ref={provided.innerRef}>
+							{items.map((item, index) => (
+								<Draggable key={index} draggableId={`item-${index}`} index={index}>
+									{(provided) => (
+										<li
+											className="px-4 py-2 bg-gray-200 border border-gray-300 rounded cursor-move hover:bg-gray-300 active:bg-gray-400"
+											{...provided.draggableProps}
+											{...provided.dragHandleProps}
+											ref={provided.innerRef}
+											id={`Item-${index}`} // Add this line to match the id with draggableId
+										>
+											{item}
+										</li>
+									)}
+								</Draggable>
+							))}
+							{provided.placeholder}
+						</ul>
+					)}
+				</Droppable>
+			</DragDropContext>
+		</div>
+	);
 }
 
 export default Game2;

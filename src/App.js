@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Navbar from "./modules/navbar";
+import Game1 from "./modules/game1/game1";
+import Game2 from "./modules/game2/game2";
+import { useState } from "react";
 
 function App() {
+  const [appView, setAppView] = useState(<Game1 />);
+  function navigateInApp(game) {
+    if (game === "game1") {
+      setAppView(<Game1 />);
+    } else if (game === "game2") {
+      setAppView(<Game2 />);
+    }
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar navigateInApp={navigateInApp} />
+      {appView}
     </div>
   );
 }

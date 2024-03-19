@@ -1,16 +1,16 @@
 .App {
-  text-align: center;
+	text-align: center;
 }
 .navbar-brand {
-  max-width: 252px;
-  color: #103a61;
-  font-size: 1.8rem;
-  font-weight: 500;
-  letter-spacing: 0.1px;
+	max-width: 252px;
+	color: #103a61;
+	font-size: 1.8rem;
+	font-weight: 500;
+	letter-spacing: 0.1px;
 }
 
 .main-btn {
-  background-color: #27dea6;
-  padding: 10px;
-  border-radius: 15px;
+	background-color: #27dea6;
+	padding: 10px;
+	border-radius: 15px;
 }

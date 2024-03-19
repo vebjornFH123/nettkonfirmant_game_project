@@ -6,7 +6,8 @@ module.exports = {
 			backgroundColor: {
 				"master-green": "#adf3d4",
 				"master-blue": "#103a61",
-				"master-brown": "#c9a179",
+				"master-lightblue": "#B7CEFF",
+				"master-green-2": "#27dea6",
 			},
 			colors: {
 				"master-blue": "#103a61",

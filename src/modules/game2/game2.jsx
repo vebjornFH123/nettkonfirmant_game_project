@@ -65,6 +65,7 @@ function Game2() {
 	const [tryAgainView, setTryAgainView] = useState(false);
 
 	const handleDragEnd = (result) => {
+		if (!result.over) return;
 		const {active, over} = result;
 
 		console.log(active, over);

@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { DndContext } from "@dnd-kit/core";
+import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import Draggable from "./draggable";
 import Droppable from "./droppable";
 import { missingWords, bibleText } from "./gameData";
 
 function Game1() {
+  const mouseSensor = useSensor(MouseSensor);
+  const touchSensor = useSensor(TouchSensor);
+
+  const sensors = useSensors(mouseSensor, touchSensor);
   function shuffleArray(array) {
     array.forEach((_, index) => {
       const randomIndex = Math.floor(Math.random() * (index + 1));
@@ -47,28 +51,26 @@ function Game1() {
       return { ...obj, wrongAnswer: false };
     });
     setTextObjects(updatedTextObjects);
-
-    console.log(e);
   }
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
-      <div className="flex flex-col justify-center items-start gap-3 overflow-hidden rounded-[25px] mb-4 bg-master-green w-screen sm:w-10/12 max-w-[780px] pt-4 px-4 pb-4">
+      <div className="flex flex-col justify-center items-start gap-3 rounded-[25px] mb-4 bg-master-green w-screen sm:w-10/12 max-w-[780px] pt-4 px-4 pb-4">
         <div>
           <h1 className="text-[1.5rem] font-semibold text-master-blue text-left">Oppgave/utforskning</h1>
           <span className="text-[1.25rem] text-master-blue">Slå opp i bibelen og finn ordene som mangler</span>
         </div>
-        <DndContext onDragEnd={handleDragEnd}>
-          <div className="flex flex-wrap justify-center max-w-6xl gap-y-3 gap-x-3 bg-white p-5 border-solid border-[3px]  border-[#27dea6] rounded-[25px]  h-[100%]">{draggables}</div>
+        <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
+          <div className="flex flex-wrap justify-center max-w-6xl gap-y-3 gap-x-3 bg-master-green p-5  rounded-[25px] h-[100%] w-full">{draggables}</div>
           <span className="text-[1.25rem] text-master-blue w-full">!!Dra ordene på plass!!</span>
           <div className="p-4 border-solid border-[3px] border-[#27dea6] rounded-[25px] bg-white">
             {textObjects.map((obj, index) =>
               obj.droppableId === undefined ? (
-                <span> {obj.text} </span>
+                <span key={index}> {obj.text} </span>
               ) : (
-                <span>
+                <span key={index}>
                   {obj.text}
-                  <Droppable id={obj.droppableId} dropt={obj.correctAnswer} wrongAnswer={obj.wrongAnswer}>
+                  <Droppable id={obj.droppableId} dropt={obj.correctAnswer} wrongAnswer={obj.wrongAnswer} key={index}>
                     {obj.correctAnswer === true ? ` ${obj.droppableId} ` : "_ _ _ _ _ _"}
                   </Droppable>
                 </span>

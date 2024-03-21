@@ -17,7 +17,7 @@ function Droppable({ dropt, wrongAnswer, ...props }) {
   };
 
   return (
-    <span ref={setNodeRef} style={style}>
+    <span ref={setNodeRef} style={style} key={props.key}>
       {props.children}
     </span>
   );

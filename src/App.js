@@ -5,7 +5,7 @@ import Game2 from "./modules/game2/game2";
 import { useState } from "react";
 
 function App() {
-  const [appView, setAppView] = useState(<Game2 />);
+  const [appView, setAppView] = useState(<Game1 />);
   function navigateInApp(game) {
     if (game === "game1") {
       setAppView(<Game1 />);

@@ -1,9 +1,13 @@
-const missingWords = ["elsket", "enbårne", "fortapt", "kamel", "nåløye", "rik", "Guds rike", "begynnelsen", "Gud", "elske", "kjærligheten", "elsker", "kjenner", "lykt", "lys", "vakker", "vett", "gullring", "dronningskrud", "slottsgården", "kongens"];
+const missingWords = ["elsket", "enbårne", "tapt", "kamel", "nåløye", "rik", "Guds rike", "begynnelsen", "Gud", "elske", "kjærligheten", "elsker", "kjenner", "lykt", "lys", "vakker", "vett", "gullring", "dronningskrud", "slottsgården", "kongens"];
 
 const bibleText = [
   {
     id: 1,
-    text: "Joh.3,16 For så høyt har Gud",
+    text: (
+      <span>
+        <i>Joh.3,16:</i>For så høyt har Gud
+      </span>
+    ),
     droppableId: "elsket",
   },
   {
@@ -14,7 +18,7 @@ const bibleText = [
   {
     id: 3,
     text: "for at hver den som tror på ham ikke skal gå",
-    droppableId: "fortapt",
+    droppableId: "tapt",
   },
   {
     id: 4,
@@ -22,7 +26,12 @@ const bibleText = [
   },
   {
     id: 5,
-    text: "Mark 10,25 Det er lettere for en",
+    lineBrake: true,
+    text: (
+      <span>
+        <i>Mark 10,25:</i> Det er lettere for en
+      </span>
+    ),
     droppableId: "kamel",
   },
   {
@@ -42,7 +51,12 @@ const bibleText = [
   },
   {
     id: 9,
-    text: "1.mosebok 1 I ",
+    lineBrake: true,
+    text: (
+      <span>
+        <i>1.mosebok 1:</i> I
+      </span>
+    ),
     droppableId: "begynnelsen",
   },
   {
@@ -56,7 +70,12 @@ const bibleText = [
   },
   {
     id: 12,
-    text: "1.Joh 4,7 Mine kjære, la oss",
+    lineBrake: true,
+    text: (
+      <span>
+        <i>1.Joh 4,7:</i> Mine kjære, la oss
+      </span>
+    ),
     droppableId: "elske",
   },
   {
@@ -80,7 +99,12 @@ const bibleText = [
   },
   {
     id: 17,
-    text: "Sal 119, 105 Ditt ord er en",
+    lineBrake: true,
+    text: (
+      <span>
+        <i>Sal 119, 105:</i> Ditt ord er en
+      </span>
+    ),
     droppableId: "lykt",
   },
   {
@@ -94,7 +118,13 @@ const bibleText = [
   },
   {
     id: 20,
-    text: "Ordspråkene 11,22 “En",
+    text: (
+      <span>
+        <i>Ordspråkene 11,22:</i> En,
+      </span>
+    ),
+    lineBrake: true,
+
     droppableId: "vakker",
   },
   {
@@ -109,11 +139,17 @@ const bibleText = [
   },
   {
     id: 23,
-    text: "i et grisetryne”",
+    text: "i et grisetryne",
   },
   {
     id: 24,
-    text: "Ester 5,1 Den tredje dagen kledte Ester seg i",
+    lineBrake: true,
+
+    text: (
+      <span>
+        <i>Ester 5,1:</i> Den tredje dagen kledte Ester seg i
+      </span>
+    ),
     droppableId: "dronningskrud",
   },
   {

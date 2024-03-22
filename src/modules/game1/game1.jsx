@@ -3,6 +3,7 @@ import { DndContext, MouseSensor, TouchSensor, KeyboardSensor, useSensor, useSen
 import Draggable from "./draggable";
 import Droppable from "./droppable";
 import { missingWords, bibleText } from "./gameData";
+import bibleImg from "../../assets/img/bible.webp";
 
 function Game1() {
   const mouseSensor = useSensor(MouseSensor);
@@ -17,6 +18,7 @@ function Game1() {
     });
     return array;
   }
+  const [gameDone, setGameDone] = useState(false);
   const [randomWordOrder, setRandomWordOrder] = useState(shuffleArray(missingWords));
   const [textObjects, setTextObjects] = useState(bibleText);
 
@@ -33,7 +35,7 @@ function Game1() {
       const updateWords = randomWordOrder.filter((word) => word !== e.over.id);
       setRandomWordOrder(updateWords);
       if (randomWordOrder.length === 0) {
-        return console.log("Game is finished tank you for playing");
+        setGameDone(true);
       }
     }
     const updatedTextObjects = textObjects.map((obj) => {
@@ -58,18 +60,18 @@ function Game1() {
     <div className=" h-screen block sm:flex items-center">
       <div className=" m-auto gap-3 rounded-[25px] mb-4 bg-master-green w-[95%] sm:w-10/12 max-w-[780px] pt-4 px-4 pb-4 mt-[75px]">
         <div>
-          <h1 className="text-[1.5rem] font-semibold text-master-blue text-left">Oppgave/utforskning</h1>
-          <span className="text-[1.25rem] text-master-blue">Slå opp i bibelen og finn ordene som mangler</span>
+          <h1 className="text-[1.5rem] font-semibold text-master-blue">Oppgave/utforskning</h1>
+          <span className="text-[1.25rem] text-master-blue">Slå opp i Bibelen og dra ordene som mangler til rett plass</span>
         </div>
         <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
           <div className="flex flex-wrap justify-center max-w-6xl gap-y-3 gap-x-3 bg-master-green p-5  rounded-[25px] h-[100%] w-full">{draggables}</div>
-          <span className="text-[1.25rem] text-master-blue w-full">!!Dra ordene på plass!!</span>
-          <div className="p-4 border-solid border-[3px] border-[#27dea6] rounded-[25px] bg-white">
+          <div className="p-4 border-solid border-[3px] border-[#27dea6] rounded-[25px] bg-white text-left">
             {textObjects.map((obj, index) =>
               obj.droppableId === undefined ? (
                 <span key={index}> {obj.text} </span>
               ) : (
                 <span key={index}>
+                  {obj.lineBrake ? <div className="h-[15px]"></div> : ""}
                   {obj.text}
                   <Droppable id={obj.droppableId} dropt={obj.correctAnswer} wrongAnswer={obj.wrongAnswer} key={index}>
                     {obj.correctAnswer === true ? ` ${obj.droppableId} ` : "_ _ _ _ _ _"}
@@ -79,6 +81,13 @@ function Game1() {
             )}
           </div>
         </DndContext>
+      </div>
+      <div style={{ display: gameDone ? "none" : "flex" }} className="absolute w-screen h-screen z-[9999] justify-center items-center bg-slate-500">
+        <div>
+          <img className="h-[500px]" src={bibleImg} alt="" />
+          <h1>Bra jobba!</h1>
+          <button></button>
+        </div>
       </div>
     </div>
   );

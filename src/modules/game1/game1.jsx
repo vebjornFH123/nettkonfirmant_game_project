@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DndContext, MouseSensor, TouchSensor, KeyboardSensor, useSensor, useSensors } from "@dnd-kit/core";
 import Draggable from "./draggable";
 import Droppable from "./droppable";
 import { missingWords, bibleText } from "./gameData";
-import bibleImg from "../../assets/img/bible.webp";
+import bibleImg from "../../assets/img/bible.png";
+import correctSound from "../../assets/sound/correct_sfx.wav";
 
 function Game1() {
   const mouseSensor = useSensor(MouseSensor);
@@ -18,23 +19,35 @@ function Game1() {
     });
     return array;
   }
+  const [randomWordOrder, setRandomWordOrder] = useState([]);
+  useEffect(() => {
+    const shuffled = shuffleArray(missingWords);
+    setRandomWordOrder(shuffled);
+  }, []);
   const [gameDone, setGameDone] = useState(false);
-  const [randomWordOrder, setRandomWordOrder] = useState(shuffleArray(missingWords));
+  const [activeElement, setActiveElement] = useState(null);
   const [textObjects, setTextObjects] = useState(bibleText);
 
+  function onDrag(e) {
+    setActiveElement(e.active.id);
+  }
+
   const draggables = randomWordOrder.map((draggable) => {
-    return <Draggable id={draggable}>{draggable}</Draggable>;
+    return (
+      <Draggable id={draggable} activeElement={activeElement}>
+        {draggable}
+      </Draggable>
+    );
   });
 
   function handleDragEnd(e) {
     if (!e.over) return;
     if (e.active.id === e.over.id) {
-      const updatedTextObjects = textObjects.map((obj) => {});
-
-      setTextObjects(updatedTextObjects);
       const updateWords = randomWordOrder.filter((word) => word !== e.over.id);
       setRandomWordOrder(updateWords);
-      if (randomWordOrder.length === 0) {
+      const audio = new Audio(correctSound);
+      audio.play();
+      if (updateWords.length === 0) {
         setGameDone(true);
       }
     }
@@ -45,25 +58,19 @@ function Game1() {
         }
         return { ...obj, correctAnswer: false };
       }
-      if (obj.droppableId === e.active.id) {
-        if (obj.droppableId === e.over.id) {
-          return { ...obj, wrongAnswer: false };
-        }
-        return { ...obj, wrongAnswer: true };
-      }
-      return { ...obj, wrongAnswer: false };
+      return { ...obj };
     });
     setTextObjects(updatedTextObjects);
   }
 
   return (
-    <div className=" h-screen block sm:flex items-center">
+    <div className=" h-screen block sm:flex items-center" style={{ overflow: gameDone ? "hidden" : "none" }}>
       <div className=" m-auto gap-3 rounded-[25px] mb-4 bg-master-green w-[95%] sm:w-10/12 max-w-[780px] pt-4 px-4 pb-4 mt-[75px]">
         <div>
           <h1 className="text-[1.5rem] font-semibold text-master-blue">Oppgave/utforskning</h1>
           <span className="text-[1.25rem] text-master-blue">Slå opp i Bibelen og dra ordene som mangler til rett plass</span>
         </div>
-        <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
+        <DndContext onDragEnd={handleDragEnd} onDragMove={onDrag} sensors={sensors}>
           <div className="flex flex-wrap justify-center max-w-6xl gap-y-3 gap-x-3 bg-master-green p-5  rounded-[25px] h-[100%] w-full">{draggables}</div>
           <div className="p-4 border-solid border-[3px] border-[#27dea6] rounded-[25px] bg-white text-left">
             {textObjects.map((obj, index) =>
@@ -73,7 +80,7 @@ function Game1() {
                 <span key={index}>
                   {obj.lineBrake ? <div className="h-[15px]"></div> : ""}
                   {obj.text}
-                  <Droppable id={obj.droppableId} dropt={obj.correctAnswer} wrongAnswer={obj.wrongAnswer} key={index}>
+                  <Droppable id={obj.droppableId} dropt={obj.correctAnswer} key={index}>
                     {obj.correctAnswer === true ? ` ${obj.droppableId} ` : "_ _ _ _ _ _"}
                   </Droppable>
                 </span>
@@ -82,11 +89,12 @@ function Game1() {
           </div>
         </DndContext>
       </div>
-      <div style={{ display: gameDone ? "none" : "flex" }} className="absolute w-screen h-screen z-[9999] justify-center items-center bg-slate-500">
-        <div>
-          <img className="h-[500px]" src={bibleImg} alt="" />
-          <h1>Bra jobba!</h1>
-          <button></button>
+      <div style={{ display: gameDone ? "flex" : "none" }} className="fixed top-0 w-screen h-screen z-[9999] justify-center items-center">
+        <div className="absolute w-screen h-screen bg-black opacity-60"></div>
+        <div className="relative h-[400px] sm:h-[500px] w-[300px] sm:w-[350px] bg-cover flex  flex-col justify-center items-center rounded-[10px]" style={{ backgroundImage: `url(${bibleImg})` }}>
+          <span className="text-white text-[1.5rem] mt-4">Bra jobba!</span>
+          <div className="h-[15px]"></div>
+          <button className="bg-master-green-2 h-[50px] w-[130px] rounded-[18px] text-[1.1rem] text-white">Neste</button>
         </div>
       </div>
     </div>

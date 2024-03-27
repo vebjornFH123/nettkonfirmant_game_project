@@ -3,12 +3,19 @@ import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useState } from "react";
 
-function Draggable(props) {
+function Draggable({ activeElement, ...props }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: props.id,
   });
+  let test = false;
+  console.log(activeElement);
+
+  if (props.id === activeElement) {
+    test = true;
+  }
   const style = {
     // Outputs `translate3d(x, y, 0)`
+    zIndex: test ? 999 : 0,
     transform: CSS.Translate.toString(transform),
   };
   return (

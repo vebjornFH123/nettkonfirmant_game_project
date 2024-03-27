@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import { DndContext, MouseSensor, TouchSensor, KeyboardSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { DndContext, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import Sortable from "./sortable";
 import Droppable from "./droppable";
 import MosesImgBig from "../../assets/img/Moses-Posed.svg";
 import MosesImgSmall from "../../assets/img/Moses-Posed-Straight.svg";
 import MosesImgSad from "../../assets/img/Moses-Sad.svg";
+import correctSound from "../../assets/sound/correct_sfx.wav";
 
 function Game2() {
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
-  const keyboardSensor = useSensor(KeyboardSensor);
 
-  const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
+  const sensors = useSensors(mouseSensor, touchSensor);
 
   const stoneRef = useRef();
 
@@ -48,6 +48,21 @@ function Game2() {
     return match;
   };
 
+  const [matches, setMatches] = useState([]);
+
+  const checkForMatches = (array) => {
+    const currentMatches = [];
+    array.forEach((item, index) => {
+      if (item === correctOrder[index]) {
+        currentMatches.push(true);
+      } else {
+        currentMatches.push(false);
+      }
+    });
+
+    return currentMatches;
+  };
+
   const [items, setItems] = useState(shuffleArray(correctOrder));
 
   const [success, setSuccess] = useState(false);
@@ -58,14 +73,24 @@ function Game2() {
     if (!result.over) return;
     const { active, over } = result;
 
-    console.log(active, over);
-
     if (active.id !== over.id) {
       const oldIndex = items.indexOf(active.id);
       const newIndex = items.indexOf(over.id);
 
       const newArray = arrayMove(items, oldIndex, newIndex);
       setItems(newArray);
+
+      const currentMatches = checkForMatches(newArray);
+
+      for (let i = 0; i < currentMatches.length; i++) {
+        if (currentMatches[i] === true) {
+          const audio = new Audio(correctSound);
+          audio.play();
+          break;
+        }
+      }
+
+      setMatches(currentMatches);
 
       const match = checkArrayMatch(newArray);
       if (match) {
@@ -143,33 +168,36 @@ function Game2() {
           </div>
           <span className=" text-3xl font-semibold text-master-blue">{isRunning ? (success ? "0:" + time : "0:" + time) : success ? "0:" + time : "1:00"}</span>
         </div>
-        <div className="z-50 top-1/2 -translate-y-1/2 absolute bg-master-lightblue p-10 rounded-xl shadow-2xl" style={{ display: success ? "block" : "none" }}>
-          <h2 className=" text-xl font-semibold">
-            Bra jobbet! <br />
-          </h2>
-          <h3 className="mt-2">Du klarte det med {time} sekunder til gode.</h3>
-          <button onClick={handleMoveOn} className=" mt-4 cursor-pointer bg-master-green-2 text-white font-semibold text-xl p-3 rounded-lg">
-            Trykk for å gå videre
-          </button>
-        </div>
+
         <div className="w-full sm:w-10/12 max-w-[576px] max-h-[40vh] relative ">
           <img className=" block sm:hidden -z-10 absolute w-full mt-20" alt="img-moses" src={MosesImgSmall} />
           <img className=" hidden sm:block -z-10 absolute w-full max-w-[800px] left-1/2 -translate-x-[5%]" alt="img-moses" src={MosesImgBig} />
 
           <div ref={stoneRef} className=" transition-transform duration-1000 mt-64 sm:mt-32 mb-32 sm:mb-24 m-auto w-[95%] flex flex-col justify-center items-start rounded-t-full  bg-neutral-300 pt-10 sm:pt-20 px-4 pb-6 z-10">
-            <h1 className="text-[1.5rem] font-semibold  text-center w-full">De 10 Bud</h1>
-            <span className=" text-[1rem] sm:text-[1.25rem] text-center w-[80%] m-auto sm:w-full mt-4">Flytt budene i riktig rekkefølge, før tiden er ute</span>
-            <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
-              <Droppable isRunning={isRunning} id={"list"}>
-                <SortableContext items={items}>
-                  {items.map((item, index) => (
-                    <Sortable id={item} key={item}>
-                      {item}
-                    </Sortable>
-                  ))}
-                </SortableContext>
-              </Droppable>
-            </DndContext>
+            <h1 className="text-[1.5rem] font-semibold  text-center w-full">De ti bud</h1>
+            <div style={{ display: success ? "none" : "block" }}>
+              <span className=" text-[1rem] sm:text-[1.25rem] text-center w-[80%] m-auto sm:w-full mt-4">Flytt budene i riktig rekkefølge, før tiden er ute</span>
+              <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
+                <Droppable isRunning={isRunning} id={"list"}>
+                  <SortableContext items={items}>
+                    {items.map((item, index) => (
+                      <Sortable index={index} matches={matches} id={item} key={item}>
+                        {item}
+                      </Sortable>
+                    ))}
+                  </SortableContext>
+                </Droppable>
+              </DndContext>
+            </div>
+            <div className=" m-auto mt-52 mb-52" style={{ display: success ? "block" : "none" }}>
+              <h2 className=" text-3xl font-semibold mb-4">
+                Alt rett! Bra jobbet! <br />
+              </h2>
+              <h3 className="mt-2">Du klarte det med {time} sekunder til gode.</h3>
+              <button onClick={handleMoveOn} className=" mt-4 cursor-pointer bg-master-green-2 text-white font-semibold text-xl p-3 rounded-lg">
+                Trykk for å gå videre
+              </button>
+            </div>
           </div>
         </div>
       </div>

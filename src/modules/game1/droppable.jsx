@@ -1,14 +1,12 @@
 import React from "react";
 import { useDroppable } from "@dnd-kit/core";
 
-function Droppable({ dropt, wrongAnswer, ...props }) {
+function Droppable({ dropt, ...props }) {
   const { isOver, setNodeRef, attributes } = useDroppable({
     id: props.id,
   });
 
-  if (wrongAnswer === true) {
-    console.log("heiersfhjkbsdhfhods");
-  }
+  console.log(props.id);
 
   const style = {
     opacity: dropt ? 1 : isOver ? 1 : 0.5,

@@ -16,7 +16,7 @@ function Sortable(props) {
 		<li
 			className={`${
 				props?.matches[props?.index] ? "bg-green-600 " : "bg-neutral-400 "
-			} flex items-center justify-between gap-4 px-4 py-2 font-semibold text-center sm:text-base text-sm text-opacity-75 bg-opacity-20 rounded-md cursor-move hover:bg-opacity-20 active:bg-opacity-50`}
+			} flex items-center justify-between gap-2 sm:gap-4 px-4 py-2 font-semibold text-center sm:text-base text-sm text-opacity-75 bg-opacity-20 rounded-md cursor-move hover:bg-opacity-20 active:bg-opacity-50`}
 			style={style}
 			ref={setNodeRef}
 			id={props.id}

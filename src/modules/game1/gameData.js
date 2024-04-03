@@ -114,7 +114,7 @@ const bibleText = [
   },
   {
     id: 19,
-    text: "for min sti»",
+    text: "for min sti",
   },
   {
     id: 20,

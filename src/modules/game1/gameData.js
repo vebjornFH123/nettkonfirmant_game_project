@@ -5,7 +5,7 @@ const bibleText = [
     id: 1,
     text: (
       <span>
-        <i>Joh.3,16:</i>For så høyt har Gud
+        <i>Joh.3,16:</i> For så høyt har Gud
       </span>
     ),
     droppableId: "elsket",
@@ -120,7 +120,7 @@ const bibleText = [
     id: 20,
     text: (
       <span>
-        <i>Ordspråkene 11,22:</i> En,
+        <i>Ordspråkene 11,22:</i> En
       </span>
     ),
     lineBrake: true,

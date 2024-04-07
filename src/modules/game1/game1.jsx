@@ -75,7 +75,7 @@ function Game1() {
           <span className="text-[1.25rem] text-master-blue">Dra ordene som mangler til rett plass</span>
           <span className="text-[1rem] text-master-blue">
             Vanskelig? Rett svar finner du i Bibelen{" "}
-            <a className="border-b-[1px] border-[#103a61]" href="https://bibel.no/nettbibelen/les/">
+            <a className="border-b-[1px] border-[#103a61]" href="https://bibel.no/nettbibelen/les/" target="_blank" rel="noopener noreferrer">
               bibelen.no
             </a>
             , så slå gjerne opp der før du løser oppgaven

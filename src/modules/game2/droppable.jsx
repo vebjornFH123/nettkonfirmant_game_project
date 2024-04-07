@@ -8,7 +8,7 @@ function Droppable({ isRunning, ...props }) {
 
   const style = {
     pointerEvents: isRunning ? "auto" : "none",
-    opacity: isRunning ? 1 : 0.4,
+    opacity: isRunning ? 1 : 0.6,
   };
 
   return (

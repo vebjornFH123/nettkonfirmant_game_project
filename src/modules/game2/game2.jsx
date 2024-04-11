@@ -167,10 +167,10 @@ function Game2() {
         </div>
       </div>
       <div style={{ display: tryAgainView ? "none" : "flex" }} className="flex flex-col items-center h-screen w-screen">
-        <div className=" z-20 fixed bottom-0 sm:bottom-6 left-1/2 -translate-x-1/2 bg-master-lightblue flex items-center justify-center gap-6 mt-4 m-auto w-screen sm:w-max rounded-t-lg sm:rounded-lg p-5 shadow-2xl">
+        <div className=" z-20 fixed bottom-0 sm:bottom-6 left-1/2 -translate-x-1/2 bg-master-lightblue flex items-center justify-center gap-6 mt-4 m-auto max-h-[80px] w-screen sm:w-max rounded-t-lg sm:rounded-lg p-5 shadow-2xl">
           <div className="flex gap-2 ">
-            <button onClick={handleStart} style={{ pointerEvents: isRunning ? "none" : "auto", opacity: isRunning ? 0.4 : 1 }} className=" cursor-pointer bg-master-green-2 text-white font-semibold text-xl p-2 rounded-lg">
-              {success ? "Prøv Igjen" : "Start"}
+            <button onClick={handleStart} style={{ pointerEvents: isRunning ? "none" : "auto", opacity: isRunning ? 0.4 : 1 }} className=" cursor-pointer bg-master-green-2 text-[0.9rem] max-w-[200px] text-white font-semibold text-xl p-2 rounded-lg">
+              {success ? "Vil du se om du klarer det ennå raskere? Prøv igjen?" : "Start"}
             </button>
           </div>
           <span className=" text-3xl font-semibold text-master-blue">{isRunning ? (success ? "0:" + time : "0:" + time) : success ? "0:" + time : "1:00"}</span>
@@ -194,7 +194,7 @@ function Game2() {
 							</button>
               */}
               </div>
-              <span style={{ display: success ? "none" : "block" }} className=" block mb-2 text-[1rem] sm:text-[1.25rem] text-center w-[75%] m-auto sm:w-full">
+              <span style={{ display: success ? "none" : "block" }} className=" block mb-2 text-[1rem] sm:text-[1.2rem] text-center w-[75%] m-auto sm:w-full">
                 Flytt budene i riktig rekkefølge, før tiden er ute
               </span>
               <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
